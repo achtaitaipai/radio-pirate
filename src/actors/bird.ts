@@ -5,8 +5,11 @@ import { bombsSprites } from '../sprites'
 export const createBird = () => {
 	const dir = Math.sign(Math.random() - 0.5)
 	const bird = add([
-		rect(50, 20),
-		pos(dir > 0 ? 0 : width(), Math.random() * 60 + 50),
+		sprite('bird', {
+			anim: 'fly',
+			flipX: dir > 0,
+		}),
+		pos(dir > 0 ? 0 : width(), Math.random() * 60),
 		move(dir > 0 ? RIGHT : LEFT, 100),
 		offscreen({ destroy: true }),
 		area(),
@@ -15,10 +18,9 @@ export const createBird = () => {
 		'enemy',
 	])
 
-	const posTarget =
-		Math.random() * CONFIG.BOMB_ZONE - CONFIG.BOMB_ZONE * 0.5 + width() * 0.5
+	const posTarget = Math.random() * dir * CONFIG.BOMB_ZONE + width() * 0.5
 	bird.onUpdate(() => {
-		const inZone = dir > 0 ? bird.pos.x < posTarget : bird.pos.x < posTarget
+		const inZone = dir > 0 ? bird.pos.x < posTarget : bird.pos.x > posTarget
 		if (!bird.hasBomb || inZone) return
 		createBomb(bird)
 		bird.hasBomb = false

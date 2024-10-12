@@ -12,9 +12,9 @@ kaplay({
 	height: 600,
 })
 //debug.inspect = true
-
 loadSprites()
 scene('main', () => {
+	setBackground(Color.fromHex('#bf2b4c'))
 	setGravity(1800)
 	createGun()
 	const birdTimer = createTimer(CONFIG.BIRD_TIME)
