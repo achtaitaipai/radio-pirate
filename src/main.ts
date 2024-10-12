@@ -5,6 +5,7 @@ import { createGun } from './actors/player'
 import { createTimer } from './actors/timer'
 import { CONFIG } from './config'
 import './style.css'
+import { loadSprites } from './sprites'
 
 kaplay({
 	width: 800,
@@ -12,6 +13,7 @@ kaplay({
 })
 //debug.inspect = true
 
+loadSprites()
 scene('main', () => {
 	setGravity(1800)
 	createGun()
@@ -22,6 +24,18 @@ scene('main', () => {
 		if (birdTimer()) createBird()
 		if (fishTimer()) createFish()
 	})
+	onDraw(() => {
+		drawRect({
+			width: width(),
+			height: 270,
+			gradient: [rgb(172, 203, 238), rgb(231, 240, 253)],
+		})
+		drawRect({
+			pos: vec2(0, 270),
+			width: width(),
+			height: height() - 270,
+			gradient: [rgb(80, 125, 160), rgb(37, 58, 75)],
+		})
+	})
 })
-
 go('main')

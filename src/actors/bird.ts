@@ -1,4 +1,6 @@
 import { CONFIG } from '../config'
+import { pickInArray } from '../lib/random'
+import { bombsSprites } from '../sprites'
 
 export const createBird = () => {
 	const dir = Math.sign(Math.random() - 0.5)
@@ -8,6 +10,7 @@ export const createBird = () => {
 		move(dir > 0 ? RIGHT : LEFT, 100),
 		offscreen({ destroy: true }),
 		area(),
+		z(1),
 		{ hasBomb: true },
 		'enemy',
 	])
@@ -25,11 +28,12 @@ export const createBird = () => {
 
 const createBomb = (bird: ReturnType<typeof createBird>) => {
 	return add([
-		circle(10),
+		sprite(pickInArray(bombsSprites)),
 		pos(bird.pos.add(vec2(0, bird.height))),
 		move(DOWN, CONFIG.BULLET_SPEED),
 		offscreen({ destroy: true }),
 		area(),
+		z(1),
 		'enemy',
 	])
 }

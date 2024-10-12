@@ -8,6 +8,7 @@ export const createGun = () => {
 		anchor('left'),
 		rotate(0),
 		area(),
+		z(1),
 	])
 	onKeyDown('left', () => {
 		gun.angle -= CONFIG.GUN_ROTATE_SPEED * dt()
@@ -34,6 +35,7 @@ export const createBullet = (gun: ReturnType<typeof createGun>) => {
 		move(gun.angle, CONFIG.BULLET_SPEED),
 		rotate(gun.angle),
 		offscreen({ destroy: true }),
+		z(1),
 		'bullet',
 	])
 	bullet.onCollide('enemy', (enemy) => {
