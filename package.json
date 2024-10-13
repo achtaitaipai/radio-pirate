@@ -5,17 +5,19 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"build": "tsc && vite build",
+		"build": "tsc && vite build && zip -r game.zip dist",
 		"preview": "vite preview",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
 		"prettier": "^3.3.3",
 		"typescript": "^5.5.3",
+		"vite-plugin-singlefile": "^2.0.2",
 		"vite": "^5.4.8"
 	},
 	"dependencies": {
 		"kaplay": "^3001.0.0-beta.3",
-		"pfxr": "^1.0.7"
+		"pfxr": "^1.0.7",
+		"xp.css": "^0.2.6"
 	}
 }

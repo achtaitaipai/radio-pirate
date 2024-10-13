@@ -1,4 +1,6 @@
+import { createSoundFromTemplate, TEMPLATES } from 'pfxr'
 import { CONFIG } from '../config'
+import { playFx } from '../lib/playFx'
 import { pickInArray } from '../lib/random'
 import { bombsSprites } from '../sprites'
 
@@ -29,6 +31,7 @@ export const createBird = () => {
 }
 
 const createBomb = (bird: ReturnType<typeof createBird>) => {
+	playFx(createSoundFromTemplate(TEMPLATES.BLIP, 6666))
 	return add([
 		sprite(pickInArray(bombsSprites)),
 		pos(bird.pos.add(vec2(0, bird.height))),
