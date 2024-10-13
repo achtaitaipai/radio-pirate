@@ -14,4 +14,8 @@ export const LEVEL1 = {
 	DURATION: 30000,
 	START_BIRD_TIME: 60000,
 	COP_TIME: 300000,
+	ALERTS: [
+		['title', 'blablabla'],
+		['title2', 'blablabla'],
+	],
 }
