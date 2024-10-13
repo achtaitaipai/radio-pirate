@@ -13,6 +13,7 @@ import { playAudio, stopAudio } from './playAudio'
 import { loadSprites } from './sprites'
 import './style.css'
 import { createCops } from './actors/cops'
+import { pickInArray } from './lib/random'
 
 kaplay({
 	width: 800,
@@ -43,7 +44,7 @@ scene('94', () => {
 		if (birdTimer(getTime(LEVEL1.BIRD_TIME)) && birdsStarted) createBird()
 		if (fishTimer(getTime(LEVEL1.FISH_TIME))) createFish()
 		if (alertTimer(getTime(LEVEL1.ALERT_TIME)))
-			createAlert('Important', 'Pour devenir riche cliquez sur prout')
+			createAlert(...pickInArray(LEVEL1.ALERTS))
 		if (copsTimer()) {
 			createCops()
 			setTimeout(() => {
@@ -131,4 +132,27 @@ scene('radio', () => {
 		updateCursor()
 	})
 })
-go('radio')
+scene('intro', () => {
+	let left = false
+	let right = false
+	add([sprite('intro')])
+	const leftBtn = add([sprite('btns'), pos(200, 420)])
+	const rightBtn = add([sprite('btns', { frame: 2 }), pos(300, 420)])
+	onKeyDown('left', () => {
+		leftBtn.frame = 1
+		if (right && !left)
+			createAlert('', 'Close me with the mouse').then(() => {
+				go('radio')
+			})
+		left = true
+	})
+	onKeyDown('right', () => {
+		rightBtn.frame = 3
+		if (left && !right)
+			createAlert('', 'Close me with the mouse').then(() => {
+				go('radio')
+			})
+		right = true
+	})
+})
+go('intro')

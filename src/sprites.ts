@@ -39,4 +39,6 @@ export const loadSprites = () => {
 	loadSprite('radioBtn', './assets/bouton.png')
 	loadSprite('cursor', './assets/cursor.png')
 	loadSprite('cops', './assets/cops.png')
+	loadSprite('intro', './assets/intro.png')
+	loadSprite('btns', './assets/btns.png', { sliceX: 4 })
 }

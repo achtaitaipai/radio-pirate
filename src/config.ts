@@ -9,13 +9,13 @@ export const LEVEL1 = {
 	ALERT_TIME: [30000, 5000],
 	FISH_JUMP_FORCE: 1000,
 	FISH_SPEED: 300,
-	LIFE: 10,
+	LIFE: 30,
 	FREQUENCIES: [94],
 	DURATION: 30000,
-	START_BIRD_TIME: 60000,
+	START_BIRD_TIME: 67000,
 	COP_TIME: 300000,
 	ALERTS: [
 		['title', 'blablabla'],
 		['title2', 'blablabla'],
-	],
+	] satisfies [string, string][],
 }
