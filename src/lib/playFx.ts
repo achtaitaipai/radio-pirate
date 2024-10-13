@@ -2,6 +2,9 @@ import { playSound, Sound } from 'pfxr'
 
 const audioContext = new AudioContext()
 
-export const playFx = (fx: Sound) => {
-	playSound(fx, audioContext, audioContext.destination)
+const gainNode = new GainNode(audioContext)
+gainNode.connect(audioContext.destination)
+export const playFx = async (fx: Sound, gain?: number) => {
+	gainNode.gain.value = gain ?? 1
+	return playSound(fx, audioContext, gainNode)
 }

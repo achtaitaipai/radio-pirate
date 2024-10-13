@@ -1,10 +1,10 @@
 export const createAlert = (title: string, content: string): Promise<void> => {
 	return new Promise((res) => {
-		const x = Math.floor(Math.random() * 80 - 40 + 50)
-		const y = Math.floor(Math.random() * 80 - 40 + 50)
+		const x = Math.floor(Math.random() * width() - width() * 0.5)
+		const y = Math.floor(Math.random() * height() - height() * 0.5)
 		const div = document.createElement('div')
 		div.innerHTML = `
-      <div class="window prout" style="width: 300px; left:${x}%; top:${y}%">
+      <div class="window prout" style="width: 300px; left:calc(50% + ${x}px); top:calc(50% + ${y}px)">
         <div class="title-bar">
           <div class="title-bar-text">${title}</div>
           <div class="title-bar-controls">

@@ -3,6 +3,7 @@ import { LEVEL1 } from '../config'
 import { createTimer } from './timer'
 import { playFx } from '../lib/playFx'
 import { createSoundFromTemplate, TEMPLATES } from 'pfxr'
+import { setPhaser } from '../playAudio'
 
 export const createGun = () => {
 	const gun = add([
@@ -43,7 +44,8 @@ export const createGun = () => {
 			go('gameover')
 		} else {
 			shake()
-			playFx(createSoundFromTemplate(TEMPLATES.EXPLOSION, 45))
+			setPhaser(800 * (1 - life / LEVEL1.LIFE))
+			playFx(createSoundFromTemplate(TEMPLATES.EXPLOSION, 45), 0.03)
 		}
 	}
 	base.onCollide('enemy', hurtPlayer)
