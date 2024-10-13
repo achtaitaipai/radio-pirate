@@ -1,5 +1,5 @@
 import { GameObj } from 'kaplay'
-import { CONFIG } from '../config'
+import { LEVEL1 } from '../config'
 import { createTimer } from './timer'
 import { playFx } from '../lib/playFx'
 import { createSoundFromTemplate, TEMPLATES } from 'pfxr'
@@ -11,17 +11,17 @@ export const createGun = () => {
 		anchor(vec2(-0.5, 0)),
 		rotate(-90),
 		area({ shape: new Rect(vec2(-30, 0), 130, 133) }),
-		z(2),
+		z(3),
 		'player',
 	])
 	onKeyDown('left', () => {
-		gun.angle -= CONFIG.GUN_ROTATE_SPEED * dt()
+		gun.angle -= LEVEL1.GUN_ROTATE_SPEED * dt()
 	})
 
 	onKeyDown('right', () => {
-		gun.angle += CONFIG.GUN_ROTATE_SPEED * dt()
+		gun.angle += LEVEL1.GUN_ROTATE_SPEED * dt()
 	})
-	const bulletTimer = createTimer(CONFIG.BULLET_TIME)
+	const bulletTimer = createTimer(LEVEL1.BULLET_TIME)
 	gun.onUpdate(() => {
 		if (bulletTimer()) createBullet(gun)
 	})
@@ -33,7 +33,7 @@ export const createGun = () => {
 		area(),
 		'player',
 	])
-	let life = CONFIG.LIFE
+	let life = LEVEL1.LIFE
 
 	const hurtPlayer = (enemy: GameObj) => {
 		destroy(enemy)
@@ -59,7 +59,7 @@ export const createBullet = (gun: ReturnType<typeof createGun>) => {
 		anchor('center'),
 		color(127, 127, 255),
 		outline(4),
-		move(gun.angle, CONFIG.BULLET_SPEED),
+		move(gun.angle, LEVEL1.BULLET_SPEED),
 		rotate(gun.angle),
 		offscreen({ destroy: true }),
 		z(2),

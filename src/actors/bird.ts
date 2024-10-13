@@ -1,5 +1,5 @@
 import { createSoundFromTemplate, TEMPLATES } from 'pfxr'
-import { CONFIG } from '../config'
+import { LEVEL1 } from '../config'
 import { playFx } from '../lib/playFx'
 import { pickInArray } from '../lib/random'
 import { bombsSprites } from '../sprites'
@@ -20,7 +20,7 @@ export const createBird = () => {
 		'enemy',
 	])
 
-	const posTarget = Math.random() * dir * CONFIG.BOMB_ZONE + width() * 0.5
+	const posTarget = Math.random() * dir * LEVEL1.BOMB_ZONE + width() * 0.5
 	bird.onUpdate(() => {
 		const inZone = dir > 0 ? bird.pos.x < posTarget : bird.pos.x > posTarget
 		if (!bird.hasBomb || inZone) return
@@ -35,7 +35,7 @@ const createBomb = (bird: ReturnType<typeof createBird>) => {
 	return add([
 		sprite(pickInArray(bombsSprites)),
 		pos(bird.pos.add(vec2(0, bird.height))),
-		move(DOWN, CONFIG.BULLET_SPEED),
+		move(DOWN, LEVEL1.BULLET_SPEED),
 		offscreen({ destroy: true }),
 		area(),
 		z(1),

@@ -5,12 +5,12 @@ import { createBird } from './actors/bird'
 import { createFish } from './actors/fish'
 import { createGun } from './actors/player'
 import { createTimer } from './actors/timer'
-import { CONFIG } from './config'
+import { LEVEL1 } from './config'
 import { loadSprites } from './sprites'
 import { playFx } from './lib/playFx'
 import { createSoundFromTemplate, TEMPLATES } from 'pfxr'
 import { mapVal } from './lib/map'
-import { createAlert } from './alert'
+import { closeAllAlerts, createAlert } from './alert'
 
 kaplay({
 	width: 800,
@@ -19,16 +19,24 @@ kaplay({
 //debug.inspect = true
 loadSprites()
 scene('94', () => {
-	createAlert('titre', 'Comment ça boum ?')
+	closeAllAlerts()
+	const levelTimeStart = Date.now()
 	setBackground(Color.fromHex('#bf2b4c'))
 	setGravity(1800)
 	createGun()
-	const birdTimer = createTimer(CONFIG.BIRD_TIME)
-	const fishTimer = createTimer(CONFIG.FISH_TIME)
+	const birdTimer = createTimer(LEVEL1.BIRD_TIME[0])
+	const fishTimer = createTimer(LEVEL1.FISH_TIME[0])
+	const alertTimer = createTimer(LEVEL1.ALERT_TIME[0])
 	createBird()
 	onUpdate(() => {
-		if (birdTimer()) createBird()
-		if (fishTimer()) createFish()
+		const difficultyFactor = (Date.now() - levelTimeStart) / LEVEL1.DURATION
+		const getTime = ([time1, time2]: number[]) =>
+			clamp(time1, difficultyFactor * (time2 - time1) + time1, time2)
+
+		if (birdTimer(getTime(LEVEL1.BIRD_TIME))) createBird()
+		if (fishTimer(getTime(LEVEL1.FISH_TIME))) createFish()
+		if (alertTimer(getTime(LEVEL1.ALERT_TIME)))
+			createAlert('Important', 'Pour devenir riche cliquez sur prout')
 	})
 
 	add([sprite('wave', { anim: '1' }), pos(100, 400), z(1)])
@@ -53,6 +61,7 @@ scene('94', () => {
 })
 
 scene('gameover', () => {
+	closeAllAlerts()
 	setBackground(rgb(0, 0, 0))
 	add([sprite('gameover')])
 	playFx(createSoundFromTemplate(TEMPLATES.FALL, 666))
@@ -65,6 +74,7 @@ scene('gameover', () => {
 })
 
 scene('radio', () => {
+	closeAllAlerts()
 	const MINCURSOR = 223
 	const MAXCURSOR = 670
 	setBackground(rgb(0, 0, 0))
@@ -85,23 +95,22 @@ scene('radio', () => {
 	const updateCursor = () => {
 		cursor.pos.x = mapVal(0, 360, btn.angle, MINCURSOR, MAXCURSOR)
 		const hz = Math.round(mapVal(0, 360, btn.angle, 88, 110))
-		const level = CONFIG.FREQUENCIES.find((el) => Math.abs(el - hz) < 2)
+		const level = LEVEL1.FREQUENCIES.find((el) => Math.abs(el - hz) < 2)
 		if (!level) {
 			clearTimeout(timeId)
 			timeId = undefined
 		} else if (timeId === undefined) {
-			console.log('go')
 			timeId = setTimeout(() => {
 				go(level.toString())
 			}, 2000)
 		}
 	}
 	onKeyDown('left', () => {
-		btn.angle = Math.max(0, btn.angle - CONFIG.BTN_ROTATE_SPEED * dt())
+		btn.angle = Math.max(0, btn.angle - LEVEL1.BTN_ROTATE_SPEED * dt())
 		updateCursor()
 	})
 	onKeyDown('right', () => {
-		btn.angle = Math.min(360, btn.angle + CONFIG.BTN_ROTATE_SPEED * dt())
+		btn.angle = Math.min(360, btn.angle + LEVEL1.BTN_ROTATE_SPEED * dt())
 		updateCursor()
 	})
 })
